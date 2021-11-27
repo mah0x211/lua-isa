@@ -27,7 +27,9 @@
 local INF_POS = math.huge
 local INF_NEG = -INF_POS
 local type = type
+local rawequal = rawequal
 local floor = math.floor
+local lower = string.lower
 
 -- type
 local function isNil(arg)
@@ -135,6 +137,7 @@ for k, v in pairs({
     ['Table'] = isTable,
     ['Thread'] = isThread,
     ['Userdata'] = isUserdata,
+    ['File'] = require('ioex').isfile,
 
     -- boolean
     ['True'] = isTrue,
@@ -161,7 +164,7 @@ for k, v in pairs({
     ['UInt16'] = isUInt16,
     ['UInt32'] = isUInt32,
 }) do
-    EXPORTS[k], EXPORTS[k:lower()] = v, v
+    EXPORTS[k], EXPORTS[lower(k)] = v, v
 end
 
 return EXPORTS
