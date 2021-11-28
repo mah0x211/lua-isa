@@ -1,6 +1,10 @@
 lua-isa
 =========
 
+[![test](https://github.com/mah0x211/lua-isa/actions/workflows/test.yml/badge.svg)](https://github.com/mah0x211/lua-isa/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/mah0x211/lua-isa/badge.svg?branch=master)](https://coveralls.io/github/mah0x211/lua-isa?branch=master)
+
+
 type check utility module.
 
 ---
