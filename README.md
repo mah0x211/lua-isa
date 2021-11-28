@@ -1,6 +1,10 @@
 lua-isa
 =========
 
+[![test](https://github.com/mah0x211/lua-isa/actions/workflows/test.yml/badge.svg)](https://github.com/mah0x211/lua-isa/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/mah0x211/lua-isa/badge.svg?branch=master)](https://coveralls.io/github/mah0x211/lua-isa?branch=master)
+
+
 type check utility module.
 
 ---
@@ -8,7 +12,7 @@ type check utility module.
 ## Installation
 
 ```sh
-luarocks install isa --from=http://mah0x211.github.io/rocks/
+luarocks install isa
 ```
 
 
@@ -116,6 +120,19 @@ the function determines whether a value is `userdata` or not.
 **Returns**
 
 - `ok`: true if the given value is `userdata`; otherwise, false.
+
+
+### ok = isa.File( val )
+
+the function determines whether a value is `file` or not.
+
+**Parameters**
+
+- `val`: value to be tested.
+
+**Returns**
+
+- `ok`: true if the given value is `file`; otherwise, false.
 
 
 ### ok = isa.True( val )

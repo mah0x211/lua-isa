@@ -1,137 +1,131 @@
---[[
-
-  Copyright (C) 2015 Masatoshi Teruya
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files (the "Software"), to deal
-  in the Software without restriction, including without limitation the rights
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-  copies of the Software, and to permit persons to whom the Software is
-  furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in
-  all copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-  THE SOFTWARE.
-
-  isa.lua
-  lua-isa
-  Created by Masatoshi Teruya on 15/09/14.
-
---]]
+--
+-- Copyright (C) 2015 Masatoshi Teruya
+--
+-- Permission is hereby granted, free of charge, to any person obtaining a copy
+-- of this software and associated documentation files (the "Software"), to deal
+-- in the Software without restriction, including without limitation the rights
+-- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+-- copies of the Software, and to permit persons to whom the Software is
+-- furnished to do so, subject to the following conditions:
+--
+-- The above copyright notice and this permission notice shall be included in
+-- all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+-- THE SOFTWARE.
+--
+-- isa.lua
+-- lua-isa
+-- Created by Masatoshi Teruya on 15/09/14.
+--
 -- constants
-local INF_POS = math.huge;
-local INF_NEG = -INF_POS;
-local type = type;
-local floor = math.floor;
+local INF_POS = math.huge
+local INF_NEG = -INF_POS
+local type = type
+local rawequal = rawequal
+local floor = math.floor
+local lower = string.lower
 
 -- type
-local function isNil( arg )
-    return type( arg ) == 'nil';
+local function isNil(arg)
+    return type(arg) == 'nil'
 end
 
-local function isBoolean( arg )
-    return type( arg ) == 'boolean';
+local function isBoolean(arg)
+    return type(arg) == 'boolean'
 end
 
-local function isString( arg )
-    return type( arg ) == 'string';
+local function isString(arg)
+    return type(arg) == 'string'
 end
 
-local function isNumber( arg )
-    return type( arg ) == 'number';
+local function isNumber(arg)
+    return type(arg) == 'number'
 end
 
-local function isFunction( arg )
-    return type( arg ) == 'function';
+local function isFunction(arg)
+    return type(arg) == 'function'
 end
 
-local function isTable( arg )
-    return type( arg ) == 'table';
+local function isTable(arg)
+    return type(arg) == 'table'
 end
 
-local function isThread( arg )
-    return type( arg ) == 'thread';
+local function isThread(arg)
+    return type(arg) == 'thread'
 end
 
-local function isUserdata( arg )
-    return type( arg ) == 'userdata';
+local function isUserdata(arg)
+    return type(arg) == 'userdata'
 end
-
 
 -- boolean
-local function isTrue( arg )
-    return arg == true;
+local function isTrue(arg)
+    return arg == true
 end
 
-local function isFalse( arg )
-    return arg == false;
+local function isFalse(arg)
+    return arg == false
 end
-
 
 -- None
-local function isNone( arg )
-    return arg == nil or arg == false or arg == 0 or arg == '' or arg ~= arg;
+local function isNone(arg)
+    return arg == nil or arg == false or arg == 0 or arg == '' or arg ~= arg
 end
-
 
 -- arithmetic
-local function isNaN( arg )
-    return arg ~= arg;
+local function isNaN(arg)
+    return arg ~= arg
 end
-
 
 -- integer
-local function isFinite( arg )
-    return type( arg ) == 'number' and ( arg < INF_POS and arg > INF_NEG );
+local function isFinite(arg)
+    return type(arg) == 'number' and (arg < INF_POS and arg > INF_NEG)
 end
 
-local function isInt( arg )
-    return isFinite( arg ) and rawequal( floor( arg ), arg );
+local function isInt(arg)
+    return isFinite(arg) and rawequal(floor(arg), arg)
 end
 
-local function isInt8( arg )
-    return isInt( arg ) and arg >= -128 and arg <= 127;
+local function isInt8(arg)
+    return isInt(arg) and arg >= -128 and arg <= 127
 end
 
-local function isInt16( arg )
-    return isInt( arg ) and arg >= -32768 and arg <= 32767;
+local function isInt16(arg)
+    return isInt(arg) and arg >= -32768 and arg <= 32767
 end
 
-local function isInt32( arg )
-    return isInt( arg ) and arg >= -2147483648 and arg <= 2147483647;
+local function isInt32(arg)
+    return isInt(arg) and arg >= -2147483648 and arg <= 2147483647
 end
-
 
 -- unsigned integer
-local function isUnsigned( arg )
-    return type( arg ) == 'number' and ( arg < INF_POS and arg >= 0 );
+local function isUnsigned(arg)
+    return type(arg) == 'number' and (arg < INF_POS and arg >= 0)
 end
 
-local function isUInt( arg )
-    return isUnsigned( arg ) and rawequal( floor( arg ), arg );
+local function isUInt(arg)
+    return isUnsigned(arg) and rawequal(floor(arg), arg)
 end
 
-local function isUInt8( arg )
-    return isUInt( arg ) and arg <= 255;
+local function isUInt8(arg)
+    return isUInt(arg) and arg <= 255
 end
 
-local function isUInt16( arg )
-    return isUInt( arg ) and arg <= 65535;
+local function isUInt16(arg)
+    return isUInt(arg) and arg <= 65535
 end
 
-local function isUInt32( arg )
-    return isUInt( arg ) and arg <= 4294967295;
+local function isUInt32(arg)
+    return isUInt(arg) and arg <= 4294967295
 end
 
-
-local EXPORTS = {};
+local EXPORTS = {}
 
 for k, v in pairs({
     -- type
@@ -143,6 +137,7 @@ for k, v in pairs({
     ['Table'] = isTable,
     ['Thread'] = isThread,
     ['Userdata'] = isUserdata,
+    ['File'] = require('ioex').isfile,
 
     -- boolean
     ['True'] = isTrue,
@@ -167,10 +162,9 @@ for k, v in pairs({
     ['UInt'] = isUInt,
     ['UInt8'] = isUInt8,
     ['UInt16'] = isUInt16,
-    ['UInt32'] = isUInt32
+    ['UInt32'] = isUInt32,
 }) do
-    EXPORTS[k], EXPORTS[k:lower()] = v, v;
+    EXPORTS[k], EXPORTS[lower(k)] = v, v
 end
 
-
-return EXPORTS;
+return EXPORTS
