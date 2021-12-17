@@ -137,7 +137,7 @@ for k, v in pairs({
     ['Table'] = isTable,
     ['Thread'] = isThread,
     ['Userdata'] = isUserdata,
-    ['File'] = require('ioex').isfile,
+    ['File'] = require('isa.isfile'),
 
     -- boolean
     ['True'] = isTrue,
