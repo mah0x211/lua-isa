@@ -1,5 +1,5 @@
 require('luacov')
-local assert = require('assertex')
+local assert = require('assert')
 local testcase = require('testcase')
 local isa = require('isa');
 
