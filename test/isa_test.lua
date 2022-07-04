@@ -1,19 +1,31 @@
 require('luacov')
 local assert = require('assert')
-local testcase = require('testcase')
-local isa = require('isa');
-
+local isa = require('isa')
+--- constants
 local INF = math.huge
 local INF_NEG = -INF
 local NAN = 0 / 0
 local FUNC = function()
 end
 local THREAD = coroutine.create(FUNC)
-local FILE
+local FILE = assert(io.tmpfile())
 
-function testcase.before_all()
-    FILE = assert(io.open('./isa_test.lua'))
-end
+-- test registry
+
+local TEST_FUNCS = {}
+local testcase = setmetatable({}, {
+    __newindex = function(_, name, func)
+        assert(type(name) == 'string', 'test name must be string')
+        assert(type(func) == 'function', 'test function must be function')
+        if TEST_FUNCS[name] then
+            error(('testcase.%s is already defined'):format(name))
+        end
+        TEST_FUNCS[#TEST_FUNCS + 1] = {
+            name = name,
+            func = func,
+        }
+    end,
+})
 
 function testcase.funcs_in_lowercase()
     for k, f in pairs(isa) do
@@ -56,7 +68,12 @@ end
 
 function testcase.is_none()
     -- test that returns true
-    for _, v in ipairs({false, 0, '', NAN}) do
+    for _, v in ipairs({
+        false,
+        0,
+        '',
+        NAN,
+    }) do
         assert.is_true(isa.None(v))
     end
     assert.is_true(isa.None())
@@ -82,7 +99,10 @@ end
 
 function testcase.is_boolean()
     -- test that returns true
-    for _, v in ipairs({true, false}) do
+    for _, v in ipairs({
+        true,
+        false,
+    }) do
         assert.is_true(isa.Boolean(v))
     end
 
@@ -110,7 +130,10 @@ end
 
 function testcase.is_string()
     -- test that returns true
-    for _, v in ipairs({'', 'foo'}) do
+    for _, v in ipairs({
+        '',
+        'foo',
+    }) do
         assert.is_true(isa.String(v))
     end
 
@@ -138,12 +161,29 @@ end
 
 function testcase.is_number()
     -- test that returns true
-    for _, v in ipairs({-1, 0, 0.1, 1, INF, INF_NEG, NAN}) do
+    for _, v in ipairs({
+        -1,
+        0,
+        0.1,
+        1,
+        INF,
+        INF_NEG,
+        NAN,
+    }) do
         assert.is_true(isa.Number(v))
     end
 
     -- test that returns false
-    for _, v in ipairs({true, false, 'foo', '', {}, FUNC, THREAD, FILE}) do
+    for _, v in ipairs({
+        true,
+        false,
+        'foo',
+        '',
+        {},
+        FUNC,
+        THREAD,
+        FILE,
+    }) do
         assert.is_false(isa.Number(v))
     end
     assert.is_false(isa.Number(nil))
@@ -152,7 +192,7 @@ end
 
 function testcase.is_function()
     -- test that returns true
-    assert.is_true(isa.Function(FUNC))
+    assert.is_true(isa.func(FUNC))
 
     -- test that returns false
     for _, v in ipairs({
@@ -171,10 +211,10 @@ function testcase.is_function()
         THREAD,
         FILE,
     }) do
-        assert.is_false(isa.Function(v))
+        assert.is_false(isa.func(v))
     end
-    assert.is_false(isa.Function(nil))
-    assert.is_false(isa.Function())
+    assert.is_false(isa.func(nil))
+    assert.is_false(isa.func())
 end
 
 function testcase.is_table()
@@ -368,7 +408,12 @@ end
 
 function testcase.is_finite()
     -- test that returns true
-    for _, v in ipairs({-1, 0, 0.1, 1}) do
+    for _, v in ipairs({
+        -1,
+        0,
+        0.1,
+        1,
+    }) do
         assert.is_true(isa.Finite(v))
     end
 
@@ -393,7 +438,11 @@ end
 
 function testcase.is_int()
     -- test that returns true
-    for _, v in ipairs({-1, 0, 1}) do
+    for _, v in ipairs({
+        -1,
+        0,
+        1,
+    }) do
         assert.is_true(isa.Int(v))
     end
 
@@ -420,7 +469,11 @@ end
 
 function testcase.is_int8()
     -- test that returns true
-    for _, v in ipairs({-128, 0, 127}) do
+    for _, v in ipairs({
+        -128,
+        0,
+        127,
+    }) do
         assert.is_true(isa.Int8(v))
     end
 
@@ -449,7 +502,11 @@ end
 
 function testcase.is_int16()
     -- test that returns true
-    for _, v in ipairs({-32768, 0, 32767}) do
+    for _, v in ipairs({
+        -32768,
+        0,
+        32767,
+    }) do
         assert.is_true(isa.Int16(v))
     end
 
@@ -478,7 +535,11 @@ end
 
 function testcase.is_int32()
     -- test that returns true
-    for _, v in ipairs({-2147483648, 0, 2147483647}) do
+    for _, v in ipairs({
+        -2147483648,
+        0,
+        2147483647,
+    }) do
         assert.is_true(isa.Int32(v))
     end
 
@@ -507,7 +568,11 @@ end
 
 function testcase.is_unsigned()
     -- test that returns true
-    for _, v in ipairs({0, 0.1, 1}) do
+    for _, v in ipairs({
+        0,
+        0.1,
+        1,
+    }) do
         assert.is_true(isa.Unsigned(v))
     end
 
@@ -535,7 +600,10 @@ end
 
 function testcase.is_uint8()
     -- test that returns true
-    for _, v in ipairs({0, 255}) do
+    for _, v in ipairs({
+        0,
+        255,
+    }) do
         assert.is_true(isa.UInt8(v))
     end
 
@@ -564,7 +632,10 @@ end
 
 function testcase.is_uint16()
     -- test that returns true
-    for _, v in ipairs({0, 65535}) do
+    for _, v in ipairs({
+        0,
+        65535,
+    }) do
         assert.is_true(isa.UInt16(v))
     end
 
@@ -593,7 +664,10 @@ end
 
 function testcase.is_uint32()
     -- test that returns true
-    for _, v in ipairs({0, 4294967295}) do
+    for _, v in ipairs({
+        0,
+        4294967295,
+    }) do
         assert.is_true(isa.UInt32(v))
     end
 
@@ -618,4 +692,19 @@ function testcase.is_uint32()
     end
     assert.is_false(isa.UInt32(nil))
     assert.is_false(isa.UInt32())
+end
+
+do
+    local code = 0
+    for _, v in ipairs(TEST_FUNCS) do
+        local ok, err = xpcall(v.func, debug.traceback)
+        if ok then
+            print('test ' .. v.name .. ': ok')
+        else
+            code = code + 1
+            print('test ' .. v.name .. ': failed')
+            print(err)
+        end
+    end
+    os.exit(code)
 end
