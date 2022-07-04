@@ -30,6 +30,7 @@ local type = type
 local rawequal = rawequal
 local floor = math.floor
 local lower = string.lower
+local getmetatable = debug.getmetatable
 
 -- type
 local function is_nil(arg)
@@ -62,6 +63,20 @@ end
 
 local function is_userdata(arg)
     return type(arg) == 'userdata'
+end
+
+--- is_callable
+local function is_callable(v)
+    if type(v) == 'function' then
+        return true
+    end
+
+    local mt = getmetatable(v)
+    if type(mt) == 'table' then
+        return type(mt.__call) == 'function'
+    end
+
+    return false
 end
 
 -- boolean
@@ -139,6 +154,9 @@ for k, v in pairs({
     ['Thread'] = is_thread,
     ['Userdata'] = is_userdata,
     ['File'] = require('isa.isfile'),
+
+    -- callable
+    ['Callable'] = is_callable,
 
     -- boolean
     ['True'] = is_true,
