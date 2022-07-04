@@ -134,6 +134,7 @@ for k, v in pairs({
     ['String'] = is_string,
     ['Number'] = is_number,
     ['Function'] = is_function,
+    ['Func'] = is_function,
     ['Table'] = is_table,
     ['Thread'] = is_thread,
     ['Userdata'] = is_userdata,

@@ -152,7 +152,7 @@ end
 
 function testcase.is_function()
     -- test that returns true
-    assert.is_true(isa.Function(FUNC))
+    assert.is_true(isa.func(FUNC))
 
     -- test that returns false
     for _, v in ipairs({
@@ -171,10 +171,10 @@ function testcase.is_function()
         THREAD,
         FILE,
     }) do
-        assert.is_false(isa.Function(v))
+        assert.is_false(isa.func(v))
     end
-    assert.is_false(isa.Function(nil))
-    assert.is_false(isa.Function())
+    assert.is_false(isa.func(nil))
+    assert.is_false(isa.func())
 end
 
 function testcase.is_table()
