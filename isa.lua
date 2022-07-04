@@ -32,137 +32,137 @@ local floor = math.floor
 local lower = string.lower
 
 -- type
-local function isNil(arg)
+local function is_nil(arg)
     return type(arg) == 'nil'
 end
 
-local function isBoolean(arg)
+local function is_boolean(arg)
     return type(arg) == 'boolean'
 end
 
-local function isString(arg)
+local function is_string(arg)
     return type(arg) == 'string'
 end
 
-local function isNumber(arg)
+local function is_number(arg)
     return type(arg) == 'number'
 end
 
-local function isFunction(arg)
+local function is_function(arg)
     return type(arg) == 'function'
 end
 
-local function isTable(arg)
+local function is_table(arg)
     return type(arg) == 'table'
 end
 
-local function isThread(arg)
+local function is_thread(arg)
     return type(arg) == 'thread'
 end
 
-local function isUserdata(arg)
+local function is_userdata(arg)
     return type(arg) == 'userdata'
 end
 
 -- boolean
-local function isTrue(arg)
+local function is_true(arg)
     return arg == true
 end
 
-local function isFalse(arg)
+local function is_false(arg)
     return arg == false
 end
 
 -- None
-local function isNone(arg)
+local function is_none(arg)
     return arg == nil or arg == false or arg == 0 or arg == '' or arg ~= arg
 end
 
 -- arithmetic
-local function isNaN(arg)
+local function is_nan(arg)
     return arg ~= arg
 end
 
 -- integer
-local function isFinite(arg)
+local function is_finite(arg)
     return type(arg) == 'number' and (arg < INF_POS and arg > INF_NEG)
 end
 
-local function isInt(arg)
-    return isFinite(arg) and rawequal(floor(arg), arg)
+local function is_int(arg)
+    return is_finite(arg) and rawequal(floor(arg), arg)
 end
 
-local function isInt8(arg)
-    return isInt(arg) and arg >= -128 and arg <= 127
+local function is_int8(arg)
+    return is_int(arg) and arg >= -128 and arg <= 127
 end
 
-local function isInt16(arg)
-    return isInt(arg) and arg >= -32768 and arg <= 32767
+local function is_int16(arg)
+    return is_int(arg) and arg >= -32768 and arg <= 32767
 end
 
-local function isInt32(arg)
-    return isInt(arg) and arg >= -2147483648 and arg <= 2147483647
+local function is_int32(arg)
+    return is_int(arg) and arg >= -2147483648 and arg <= 2147483647
 end
 
 -- unsigned integer
-local function isUnsigned(arg)
+local function is_unsigned(arg)
     return type(arg) == 'number' and (arg < INF_POS and arg >= 0)
 end
 
-local function isUInt(arg)
-    return isUnsigned(arg) and rawequal(floor(arg), arg)
+local function is_uint(arg)
+    return is_unsigned(arg) and rawequal(floor(arg), arg)
 end
 
-local function isUInt8(arg)
-    return isUInt(arg) and arg <= 255
+local function is_uint8(arg)
+    return is_uint(arg) and arg <= 255
 end
 
-local function isUInt16(arg)
-    return isUInt(arg) and arg <= 65535
+local function is_uint16(arg)
+    return is_uint(arg) and arg <= 65535
 end
 
-local function isUInt32(arg)
-    return isUInt(arg) and arg <= 4294967295
+local function is_uint32(arg)
+    return is_uint(arg) and arg <= 4294967295
 end
 
 local EXPORTS = {}
 
 for k, v in pairs({
     -- type
-    ['Nil'] = isNil,
-    ['Boolean'] = isBoolean,
-    ['String'] = isString,
-    ['Number'] = isNumber,
-    ['Function'] = isFunction,
-    ['Table'] = isTable,
-    ['Thread'] = isThread,
-    ['Userdata'] = isUserdata,
+    ['Nil'] = is_nil,
+    ['Boolean'] = is_boolean,
+    ['String'] = is_string,
+    ['Number'] = is_number,
+    ['Function'] = is_function,
+    ['Table'] = is_table,
+    ['Thread'] = is_thread,
+    ['Userdata'] = is_userdata,
     ['File'] = require('isa.isfile'),
 
     -- boolean
-    ['True'] = isTrue,
-    ['False'] = isFalse,
+    ['True'] = is_true,
+    ['False'] = is_false,
 
     -- None: nil | false | 0 | '' | nan
-    ['None'] = isNone,
+    ['None'] = is_none,
 
     -- arithmetic
     -- NaN
-    ['NaN'] = isNaN,
-    ['Finite'] = isFinite,
+    ['NaN'] = is_nan,
+    ['Finite'] = is_finite,
 
     -- integer
-    ['Int'] = isInt,
-    ['Int8'] = isInt8,
-    ['Int16'] = isInt16,
-    ['Int32'] = isInt32,
+    ['Int'] = is_int,
+    ['Int8'] = is_int8,
+    ['Int16'] = is_int16,
+    ['Int32'] = is_int32,
 
     -- unsigned integer
-    ['Unsigned'] = isUnsigned,
-    ['UInt'] = isUInt,
-    ['UInt8'] = isUInt8,
-    ['UInt16'] = isUInt16,
-    ['UInt32'] = isUInt32,
+    ['Unsigned'] = is_unsigned,
+    ['UInt'] = is_uint,
+    ['UInt8'] = is_uint8,
+    ['UInt16'] = is_uint16,
+    ['UInt32'] = is_uint32,
 }) do
     EXPORTS[k], EXPORTS[lower(k)] = v, v
 end
