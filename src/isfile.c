@@ -21,7 +21,7 @@
  *
  */
 // lua
-#include "lauxhlib.h"
+#include <lauxhlib.h>
 
 static int isfile_lua(lua_State *L) {
   lua_settop(L, 1);
