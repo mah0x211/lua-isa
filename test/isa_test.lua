@@ -325,6 +325,37 @@ function testcase.is_file()
     assert.is_false(isa.File())
 end
 
+function testcase.is_callable()
+    -- test that returns true
+    for _, v in ipairs({
+        FUNC,
+        coroutine.wrap(FUNC),
+        setmetatable({}, {__call = FUNC}),
+    }) do
+        assert.is_true(isa.Callable(v))
+    end
+
+    -- test that returns false
+    for _, v in ipairs({
+        'foo',
+        '',
+        {},
+        -1,
+        0,
+        0.1,
+        1,
+        INF,
+        INF_NEG,
+        NAN,
+        THREAD,
+        FILE,
+    }) do
+        assert.is_false(isa.Callable(v))
+    end
+    assert.is_false(isa.Callable(nil))
+    assert.is_false(isa.Callable())
+end
+
 function testcase.is_true()
     -- test that returns true
     assert.is_true(isa.True(true))
