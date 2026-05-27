@@ -20,8 +20,10 @@
  *  DEALINGS IN THE SOFTWARE.
  *
  */
+// depend
+#include "lauxhlib.h"
 // lua
-#include <lauxhlib.h>
+#include <lauxlib.h>
 
 static int isfile_lua(lua_State *L) {
   lua_settop(L, 1);
